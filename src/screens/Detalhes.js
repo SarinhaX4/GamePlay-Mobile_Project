@@ -35,17 +35,17 @@ import { members } from '../data/members';
 
 const banner = require('../../assets/banner.png');
 
-// { route } é uma prop que a NAVEGAÇÃO (Parte 5) vai entregar para esta tela,
-// com a partida que o usuário tocou lá na Home.
-export default function Detalhes({ route }) {
+// { route, navigation } são props entregues pelas rotas (AppRoutes.js).
+// route.params traz a partida que o usuário tocou lá na Home.
+export default function Detalhes({ route, navigation }) {
   // O "?." (optional chaining) evita erro se route não existir.
   // O "??" diz: se não veio partida nenhuma, usa a primeira da lista.
-  // Hoje, sem navegação, route não existe, então a tela mostra "Lendários".
-  // Na Parte 5, ela vai mostrar a partida que foi tocada.
+  // Com a navegação pronta, a tela mostra a partida que foi tocada na Home.
   const appointment = route?.params?.appointment ?? appointments[0];
 
+  // goBack tira esta tela da pilha e a Home aparece de novo
   function handleBack() {
-    Alert.alert('Voltar', 'A navegação chega na Parte 5.');
+    navigation.goBack();
   }
 
   // Share é uma API do react-native que abre a janela de

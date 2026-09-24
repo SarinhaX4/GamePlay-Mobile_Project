@@ -48,7 +48,8 @@ import { categories } from '../data/categories';
 // O servidor já vem selecionado (o Figma mostra "Lendários").
 const selectedGuild = appointments[0];
 
-export default function Agendar() {
+// { navigation } chega como PROP, entregue pelas rotas (AppRoutes.js)
+export default function Agendar({ navigation }) {
   // USESTATE (slide 51): um estado para cada informação da tela.
   // A categoria começa em '1' (Ranqueada), igual ao Figma.
   const [category, setCategory] = useState('1');
@@ -70,8 +71,9 @@ export default function Agendar() {
     Keyboard.dismiss();
   }
 
+  // goBack tira esta tela da pilha e a Home aparece de novo
   function handleBack() {
-    Alert.alert('Voltar', 'A navegação chega na Parte 5.');
+    navigation.goBack();
   }
 
   function handleGuildPress() {
@@ -96,9 +98,15 @@ export default function Agendar() {
     // Procuro o nome da categoria pelo id, para mostrar no Alert
     const categoryName = categories.find((item) => item.id === category).title;
 
+    // ALERT COM BOTÕES (slide 55): o terceiro argumento é um array de botões.
+    // Cada botão tem um texto e, se quiser, uma função no onPress.
     Alert.alert(
       'Partida agendada!',
-      `${selectedGuild.guildName} • ${categoryName}\n${day}/${month} às ${hour}:${minute}h`
+      `${selectedGuild.guildName} • ${categoryName}\n${day}/${month} às ${hour}:${minute}h`,
+      [
+        { text: 'Agendar outra' }, // sem onPress: só fecha o Alert e fico na tela
+        { text: 'Ir para a Home', onPress: () => navigation.goBack() },
+      ]
     );
 
     // LIMPAR O FORMULÁRIO: só funciona porque os campos são CONTROLADOS (value).

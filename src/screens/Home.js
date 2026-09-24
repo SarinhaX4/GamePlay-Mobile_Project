@@ -19,7 +19,7 @@
  */
 
 import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
@@ -34,7 +34,8 @@ import ListDivider from '../components/ListDivider';
 import { theme } from '../theme';
 import { appointments } from '../data/appointments';
 
-export default function Home() {
+// { navigation } chega como PROP, entregue pelas rotas (AppRoutes.js)
+export default function Home({ navigation }) {
   // USESTATE (slide 51): começa com '' = nenhuma categoria selecionada.
   // Hook sempre no topo do componente, nunca dentro de if.
   const [category, setCategory] = useState('');
@@ -56,14 +57,16 @@ export default function Home() {
     ? appointments.filter((item) => item.category === category)
     : appointments;
 
-  // Por enquanto, os toques só mostram um Alert.
-  // Na PARTE 5 essas funções vão navegar para outras telas.
+  // NAVEGAÇÃO: navigate coloca a tela nova por cima da Home.
   function handleAppointmentCreate() {
-    Alert.alert('Agendar', 'A tela de agendar chega na Parte 4.');
+    navigation.navigate('Agendar');
   }
 
+  // O segundo argumento do navigate são os DADOS enviados para a próxima tela.
+  // A tela Detalhes recebe a partida tocada em route.params.appointment.
+  // É como passar uma prop, só que de uma TELA para outra.
   function handleAppointmentDetails(item) {
-    Alert.alert(item.guildName, 'Os detalhes chegam na Parte 3.');
+    navigation.navigate('Detalhes', { appointment: item });
   }
 
   return (

@@ -17,7 +17,7 @@
  *   +------------------------------+
  */
 
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
@@ -33,12 +33,14 @@ import { user } from '../data/user';
 // Fica fora do componente porque não muda nunca.
 const illustration = require('../../assets/illustration.png');
 
-export default function Login() {
-  // Função que o botão vai disparar.
-  // Por enquanto só mostra um Alert (slide 55), usando template string com crase.
-  // Na PARTE 5, quando tivermos navegação, ela vai levar para a Home.
+// { navigation } chega como PROP, entregue pelas rotas (AppRoutes.js).
+// Desestruturação na assinatura, igual ao Button (slide 12).
+export default function Login({ navigation }) {
+  // replace (e não navigate): TROCA o Login pela Home na pilha.
+  // Assim, depois de entrar, a pessoa não volta para o Login
+  // pelo gesto de voltar do celular. É o comportamento de um login de verdade.
   function handleSignIn() {
-    Alert.alert('GamePlay', `Bem-vinda, ${user.name}! A Home chega na próxima parte.`);
+    navigation.replace('Home');
   }
 
   return (
