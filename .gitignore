@@ -32,6 +32,7 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
 
 # typescript
 *.tsbuildinfo
@@ -39,3 +40,7 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Meu guia de estudo pessoal (não sobe)
+ROTEIRO-ESTUDO.md
+
