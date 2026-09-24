@@ -1,8 +1,8 @@
 # GamePlay
 
-Aplicativo mobile desenvolvido em React Native + Expo, recriando 4 telas do protótipo Figma **"GamePlay - NLW Together"** (um app para agendar partidas de jogos com amigos do Discord). Atividade acadêmica da disciplina de Mobile, do curso de Análise e Desenvolvimento de Sistemas.
+Aplicativo mobile desenvolvido em React Native + Expo, recriando 4 telas do protótipo Figma **"GamePlay - NLW Together"** (um app para agendar partidas de jogos com amigos do Discord). Atividade acadêmica da disciplina de Mobile, do curso de Engenharia de Software(UCB).
 
-**Autora:** Sara
+**Autora:** Sara Cristina Barros de Oliveira
 
 ## Telas desenvolvidas
 
