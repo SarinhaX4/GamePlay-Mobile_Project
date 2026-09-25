@@ -1,29 +1,13 @@
-/**
- * Avatar.js
- *
- * A foto quadrada com cantos arredondados e borda.
- * Aparece na Home (meu perfil) e nos Detalhes (lista de jogadores).
- * Por aparecer em mais de um lugar, virou componente.
- *
- * Ele aceita os DOIS tipos de imagem do slide 40, porque recebe o
- * "source" pronto e só repassa para o <Image>:
- *   - local:  <Avatar source={require('../../assets/avatar.png')} />
- *   - remota: <Avatar source={{ uri: link_da_imagem }} />
- *
- * @param {number|object} source - imagem local (require) ou remota ({ uri })
- */
-
 import { Image, StyleSheet, View } from 'react-native';
 import { theme } from '../theme';
+
+// avatar quadrado com borda, usa na home e nos detalhes
+// aceita source local (require) ou remota ({ uri }), só repassa pro Image
 
 export default function Avatar({ source }) {
   return (
     <View style={styles.container}>
-      {/*
-        width e height SEMPRE definidos no estilo:
-        obrigatório para imagem remota (senão fica com altura zero, slide 41)
-        e deixa a imagem local do mesmo tamanho que a remota.
-      */}
+      {/* width/height obrigatorio pra remota nao ficar com altura zero */}
       <Image source={source} style={styles.avatar} />
     </View>
   );
@@ -36,7 +20,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    overflow: 'hidden', // corta a foto para respeitar os cantos arredondados (slide 30)
+    overflow: 'hidden', // corta pra respeitar o borderRadius
     marginRight: 20,
   },
   avatar: {

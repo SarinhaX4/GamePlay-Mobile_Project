@@ -1,17 +1,7 @@
 /**
- * categories.js
- *
- * As categorias de partida. Ficam em um array para que a lista
- * seja desenhada com .map() (em vez de escrever 4 componentes na mão).
- *
- * Cada categoria tem:
- *   id    -> identificador único (usado como key e para saber qual está selecionada)
- *   title -> texto do card
- *   icon  -> nome de um ícone do MaterialCommunityIcons (@expo/vector-icons)
- *
- * NOTA: no Figma os ícones são imagens coloridas. Troquei por ícones do
- * @expo/vector-icons porque eles aceitam cor por prop, e assim seguem
- * a paleta roxa do app (e não precisei exportar imagens).
+categories.js
+As categorias de partida. Ficam em um array para que a lista
+seja desenhada com .map() (em vez de escrever 4 componentes na mão).
  */
 
 export const categories = [

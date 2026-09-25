@@ -1,30 +1,15 @@
-/**
- * GuildCard.js
- *
- * O card do servidor selecionado, na tela Agendar:
- *
- *   +--------------------------------------+
- *   | [capa]  Lendários                  > |
- *   |         League of Legends            |
- *   +--------------------------------------+
- *
- * A atividade pede a versão "servidor selecionado", então o card
- * sempre mostra um servidor. O modal com a lista não faz parte.
- *
- * @param {object}   data    - um objeto do appointments.js
- * @param {function} onPress - função do toque
- */
-
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import GuildIcon from './GuildIcon';
 import { theme } from '../theme';
 
+// card do servidor selecionado na tela agendar
+// a atividade pede so a versao "ja selecionado", sem o modal de lista
+
 export default function GuildCard({ data, onPress }) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.7}>
-      {/* Reuso do GuildIcon, o mesmo da lista da Home */}
       <GuildIcon image={data.image} />
 
       <View style={styles.content}>
@@ -39,17 +24,17 @@ export default function GuildCard({ data, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 68, // altura do Figma (a largura vem do pai)
+    height: 68, // altura do figma
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: theme.colors.border,
     borderRadius: 8,
     paddingRight: 24,
-    overflow: 'hidden', // a capa respeita o canto arredondado do card
+    overflow: 'hidden', // capa respeita o canto arredondado
   },
   content: {
-    flex: 1, // empurra a seta para a direita
+    flex: 1, // empurra a seta pra direita
     marginLeft: 20,
   },
   title: {

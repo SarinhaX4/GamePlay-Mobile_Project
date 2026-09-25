@@ -1,37 +1,22 @@
-/**
- * Member.js
- *
- * UM jogador da lista da tela de Detalhes:
- *
- *   [foto]  Diego
- *           (o) Disponível
- *
- * @param {object} data - um objeto do members.js
- */
-
 import { StyleSheet, Text, View } from 'react-native';
 
 import Avatar from './Avatar';
 import { theme } from '../theme';
 
+// um jogador da lista de detalhes, foto + nome + status
+
 export default function Member({ data }) {
-  // Uma variável booleana deixa o JSX mais fácil de ler
-  const isOnline = data.status === 'online';
+  const isOnline = data.status === 'online'; // fica mais facil de ler no jsx
 
   return (
     <View style={styles.container}>
-      {/* Reuso do Avatar da Home: ele aceita imagem local e remota */}
       <Avatar source={data.avatar} />
 
       <View>
         <Text style={styles.name}>{data.username}</Text>
 
         <View style={styles.status}>
-          {/*
-            A bolinha: uma View de 8x8 com borderRadius 4 (metade do tamanho)
-            vira um círculo. A cor muda conforme o status: ESTILO CONDICIONAL
-            dentro de um ARRAY DE ESTILOS (slides 26 e 28).
-          */}
+          {/* bolinha muda de cor conforme status */}
           <View
             style={[
               styles.bullet,
@@ -63,7 +48,7 @@ const styles = StyleSheet.create({
   bullet: {
     width: 8,
     height: 8,
-    borderRadius: 4, // metade da largura = círculo
+    borderRadius: 4, // metade da largura vira circulo
   },
   statusText: {
     fontFamily: theme.fonts.text400,

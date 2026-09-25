@@ -1,25 +1,5 @@
-/**
- * Home.js  (tela "Home" do Figma)
- *
- * Estrutura da tela:
- *
- *   +--------------------------------------+
- *   | [foto] Olá, Sara              [ + ]  |  Profile + ButtonAdd
- *   |                                      |
- *   | [Ranqueada][Duelo][Diversão][Tre...  |  CategorySelect (rola para o lado)
- *   |                                      |
- *   | Partidas agendadas         Total 5   |  ListHeader
- *   | [capa] Lendários        Ranqueada    |  Appointment
- *   |        ---------------------------   |  ListDivider
- *   | [capa] Yeah, boy         Diversão    |
- *   +--------------------------------------+
- *
- * ESTADO desta tela: qual categoria está selecionada.
- * Tocar numa categoria FILTRA a lista de partidas.
- */
-
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 
@@ -34,60 +14,44 @@ import ListDivider from '../components/ListDivider';
 import { theme } from '../theme';
 import { appointments } from '../data/appointments';
 
-// { navigation } chega como PROP, entregue pelas rotas (AppRoutes.js)
 export default function Home({ navigation }) {
-  // USESTATE (slide 51): começa com '' = nenhuma categoria selecionada.
-  // Hook sempre no topo do componente, nunca dentro de if.
   const [category, setCategory] = useState('');
 
-  // Chamada quando o usuário toca numa categoria.
-  // Tocou na MESMA que já estava selecionada? Desmarca (volta para '').
-  // Tocou em outra? Seleciona a nova.
-  // Isso é o ciclo do slide 52: eu mudo o estado, o React redesenha a tela.
+  // toca na mesma categoria desmarca, toca em outra troca
   function handleCategorySelect(categoryId) {
     setCategory(categoryId === category ? '' : categoryId);
   }
 
-  // Lista que vai aparecer na tela:
-  // - sem categoria selecionada: todas as partidas
-  // - com categoria: só as partidas daquela categoria
-  // .filter() cria um array NOVO (não mexe no original), então respeita
-  // a regra de imutabilidade do slide 53.
   const filteredAppointments = category
     ? appointments.filter((item) => item.category === category)
     : appointments;
 
-  // NAVEGAÇÃO: navigate coloca a tela nova por cima da Home.
+  function handleSignOut() {
+    Alert.alert('Sair', 'Deseja sair do GamePlay?', [
+      { text: 'Não', style: 'cancel' },
+      { text: 'Sim', style: 'destructive', onPress: () => navigation.replace('Login') },
+    ]);
+  }
+
   function handleAppointmentCreate() {
     navigation.navigate('Agendar');
   }
 
-  // O segundo argumento do navigate são os DADOS enviados para a próxima tela.
-  // A tela Detalhes recebe a partida tocada em route.params.appointment.
-  // É como passar uma prop, só que de uma TELA para outra.
+  // segundo argumento do navigate manda os dado pra proxima tela
   function handleAppointmentDetails(item) {
     navigation.navigate('Detalhes', { appointment: item });
   }
 
   return (
     <Background>
-      {/* edges={['top']}: só protejo o topo; embaixo a lista pode ir até a borda */}
       <SafeAreaView style={styles.container} edges={['top']}>
         <StatusBar style="light" />
 
-        {/* CABEÇALHO: perfil de um lado, botão do outro */}
         <View style={styles.header}>
-          <Profile />
-          {/* Passo a FUNÇÃO, sem parênteses (slide 15) */}
+          <Profile onAvatarPress={handleSignOut} />
           <ButtonAdd onPress={handleAppointmentCreate} />
         </View>
 
-        {/*
-          A Home passa para o CategorySelect:
-          - o valor do estado (categorySelected), para ele saber qual acender
-          - a função que troca o estado (setCategory), para ele avisar o toque
-          É a ELEVAÇÃO DE ESTADO (slide 54): o estado mora aqui na tela.
-        */}
         <View style={styles.categories}>
           <CategorySelect
             categorySelected={category}
@@ -96,36 +60,26 @@ export default function Home({ navigation }) {
         </View>
 
         <View style={styles.listHeader}>
-          {/* Template string: o total muda sozinho quando a lista é filtrada */}
           <ListHeader
             title="Partidas agendadas"
             subtitle={`Total ${filteredAppointments.length}`}
           />
         </View>
 
-        {/* A lista rola para baixo; o cabeçalho e as categorias ficam parados */}
         <ScrollView
           style={styles.list}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Se o filtro não achar nada, mostro uma mensagem em vez de tela vazia */}
           {filteredAppointments.length === 0 && (
             <Text style={styles.empty}>Nenhuma partida nesta categoria.</Text>
           )}
 
-          {/*
-            .map() desenha um Appointment para cada partida.
-            O index diz a posição: coloco a linha divisória ANTES
-            de todo item, menos do primeiro (index > 0).
-            A key fica na View de fora, porque é ela que o map devolve.
-          */}
           {filteredAppointments.map((item, index) => (
             <View key={item.id}>
               {index > 0 && <ListDivider />}
               <Appointment
                 data={item}
-                // arrow function porque preciso passar o item como argumento (slide 16)
                 onPress={() => handleAppointmentDetails(item)}
               />
             </View>
@@ -142,7 +96,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between', // perfil na esquerda, botão na direita
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 24,
     marginTop: 12,
@@ -155,7 +109,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   list: {
-    flex: 1, // a lista ocupa todo o resto da tela e rola dentro desse espaço
+    flex: 1,
   },
   listContent: {
     paddingHorizontal: 24,

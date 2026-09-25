@@ -1,23 +1,3 @@
-/**
- * Agendar.js  (tela "Agendar - Servidor selecionado" do Figma)
- *
- * Estrutura da tela:
- *
- *   +--------------------------------------+
- *   | <-       Agendar partida             |  Header (reuso, SEM compartilhar)
- *   | Categoria                            |
- *   | [Ranqueada■][Duelo□][Diversão□]...   |  CategorySelect com checkbox
- *   | [capa] Lendários                  >  |  GuildCard
- *   | Dia e mês           Hora e minuto    |
- *   | [DD] / [MM]         [HH] : [MM]      |  4x SmallInput
- *   | Descrição           32/100 caracteres|
- *   | [                                  ] |  TextArea
- *   | [          Agendar               ]   |  Button (reuso, SEM ícone)
- *   +--------------------------------------+
- *
- * ESTADO desta tela: a categoria + os 5 campos do formulário.
- */
-
 import { useState } from 'react';
 import {
   Alert,
@@ -45,13 +25,10 @@ import { theme } from '../theme';
 import { appointments } from '../data/appointments';
 import { categories } from '../data/categories';
 
-// O servidor já vem selecionado (o Figma mostra "Lendários").
+// servidor ja vem selecionado, figma mostra lendarios
 const selectedGuild = appointments[0];
 
-// { navigation } chega como PROP, entregue pelas rotas (AppRoutes.js)
 export default function Agendar({ navigation }) {
-  // USESTATE (slide 51): um estado para cada informação da tela.
-  // A categoria começa em '1' (Ranqueada), igual ao Figma.
   const [category, setCategory] = useState('1');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
@@ -59,19 +36,15 @@ export default function Agendar({ navigation }) {
   const [minute, setMinute] = useState('');
   const [description, setDescription] = useState('');
 
-  // Diferente da Home, aqui NÃO desmarca ao tocar de novo:
-  // uma partida sempre precisa de uma categoria.
-  // Então é só trocar o estado para a categoria tocada.
+  // diferente da home, aqui nao desmarca, partida sempre precisa de categoria
   function handleCategorySelect(categoryId) {
     setCategory(categoryId);
   }
 
-  // Fecha o teclado ao tocar fora dos campos (slide 66)
   function fecharTeclado() {
     Keyboard.dismiss();
   }
 
-  // goBack tira esta tela da pilha e a Home aparece de novo
   function handleBack() {
     navigation.goBack();
   }
@@ -80,14 +53,11 @@ export default function Agendar({ navigation }) {
     Alert.alert('Servidores', 'A lista de servidores não faz parte desta atividade.');
   }
 
-  // VALIDAÇÃO SIMPLES (slide 70):
-  // o botão só "acende" quando os 4 campos de data e hora têm 2 dígitos.
-  // Isso é calculado a cada redesenho, a partir do estado.
+  // botao so acende quando os 4 campo de data/hora tem 2 digito
   const isFormIncomplete =
     day.length < 2 || month.length < 2 || hour.length < 2 || minute.length < 2;
 
   function handleSave() {
-    // Number() transforma o texto "07" no número 7, para eu comparar
     if (Number(day) < 1 || Number(day) > 31 || Number(month) < 1 || Number(month) > 12) {
       return Alert.alert('Atenção', 'Confira o dia e o mês.');
     }
@@ -95,22 +65,18 @@ export default function Agendar({ navigation }) {
       return Alert.alert('Atenção', 'Confira a hora e o minuto.');
     }
 
-    // Procuro o nome da categoria pelo id, para mostrar no Alert
     const categoryName = categories.find((item) => item.id === category).title;
 
-    // ALERT COM BOTÕES (slide 55): o terceiro argumento é um array de botões.
-    // Cada botão tem um texto e, se quiser, uma função no onPress.
     Alert.alert(
       'Partida agendada!',
       `${selectedGuild.guildName} • ${categoryName}\n${day}/${month} às ${hour}:${minute}h`,
       [
-        { text: 'Agendar outra' }, // sem onPress: só fecha o Alert e fico na tela
+        { text: 'Agendar outra' },
         { text: 'Ir para a Home', onPress: () => navigation.goBack() },
       ]
     );
 
-    // LIMPAR O FORMULÁRIO: só funciona porque os campos são CONTROLADOS (value).
-    // Com defaultValue, o estado limparia mas o texto continuaria na tela (slide 60).
+    // so limpa pq os campo sao controlados, com defaultValue nao limparia na tela
     setDay('');
     setMonth('');
     setHour('');
@@ -119,37 +85,25 @@ export default function Agendar({ navigation }) {
   }
 
   return (
-    // A MOLDURA DO FORMULÁRIO, na ordem do slide 69:
-    // desviar do teclado -> poder rolar -> fechar o teclado ao tocar fora
     <KeyboardAvoidingView
       style={styles.flex}
-      // Platform.OS devolve 'ios' ou 'android' (slide 67)
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Background>
         <StatusBar style="light" />
 
-        {/* Reuso do Header: aqui SEM onShare, então sem o ícone de compartilhar */}
         <Header title="Agendar partida" onBack={handleBack} />
 
         <ScrollView
           contentContainerStyle={styles.scroll}
           showsVerticalScrollIndicator={false}
-          // Sem isso, o primeiro toque num botão com o teclado aberto
-          // só fecharia o teclado, e o botão não responderia.
           keyboardShouldPersistTaps="handled"
         >
           <TouchableWithoutFeedback onPress={fecharTeclado}>
             <View>
               <Text style={[styles.label, styles.labelCategory]}>Categoria</Text>
 
-              {/*
-                Reuso do CategorySelect da Home, agora com hasCheckBox.
-                O estado mora AQUI na tela (elevação de estado, slide 54).
-                Ao tocar num card: setCategory muda o estado -> o React
-                redesenha -> o card tocado fica opaco com o quadradinho rosa,
-                e os outros ficam apagados.
-              */}
+              {/* estado mora aqui, elevacao de estado */}
               <CategorySelect
                 hasCheckBox
                 categorySelected={category}
@@ -159,12 +113,10 @@ export default function Agendar({ navigation }) {
               <View style={styles.form}>
                 <GuildCard data={selectedGuild} onPress={handleGuildPress} />
 
-                {/* Duas colunas lado a lado: data à esquerda, hora à direita */}
                 <View style={styles.row}>
                   <View>
                     <Text style={styles.label}>Dia e mês</Text>
                     <View style={styles.column}>
-                      {/* Passo o setDay DIRETO: ele já recebe o texto (slide 60) */}
                       <SmallInput value={day} onChangeText={setDay} placeholder="DD" />
                       <Text style={styles.divider}>/</Text>
                       <SmallInput value={month} onChangeText={setMonth} placeholder="MM" />
@@ -183,19 +135,12 @@ export default function Agendar({ navigation }) {
 
                 <View style={[styles.row, styles.descriptionHeader]}>
                   <Text style={styles.label}>Descrição</Text>
-                  {/* CONTADOR DE CARACTERES (mini-desafio 4 do slide 79):
-                      o .length do estado muda a cada letra digitada */}
                   <Text style={styles.counter}>{description.length}/100 caracteres</Text>
                 </View>
 
                 <TextArea value={description} onChangeText={setDescription} maxLength={100} />
 
                 <SafeAreaView edges={['bottom']} style={styles.footer}>
-                  {/*
-                    Reuso do Button, agora SEM ícone e COM disabled:
-                    enquanto o formulário estiver incompleto, o botão fica
-                    apagado e não responde. Igual ao "Salvar" do profile.
-                  */}
                   <Button title="Agendar" onPress={handleSave} disabled={isFormIncomplete} />
                 </SafeAreaView>
               </View>
@@ -212,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scroll: {
-    flexGrow: 1, // flexGrow e não flex: 1, senão trava a rolagem (slide 68)
+    flexGrow: 1, // flexGrow e nao flex, senao trava a rolagem
     paddingTop: 32,
   },
   label: {
@@ -222,13 +167,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   labelCategory: {
-    // "Categoria" fica fora do .form, então precisa do próprio recuo lateral
     paddingHorizontal: 24,
   },
   form: {
     paddingHorizontal: 24,
     marginTop: 32,
-    gap: 28, // espaço entre os blocos do formulário (slide 36)
+    gap: 28,
   },
   row: {
     flexDirection: 'row',
@@ -245,8 +189,8 @@ const styles = StyleSheet.create({
     color: theme.colors.body,
   },
   descriptionHeader: {
-    alignItems: 'baseline', // alinha os dois textos pela linha de base (slide 33)
-    marginBottom: -16, // aproxima o título da caixa de texto (o gap do form é 28)
+    alignItems: 'baseline',
+    marginBottom: -16, // aproxima o titulo da caixa de texto
   },
   counter: {
     fontFamily: theme.fonts.text400,

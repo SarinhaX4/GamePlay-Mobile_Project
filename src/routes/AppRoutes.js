@@ -1,27 +1,3 @@
-/**
- * AppRoutes.js
- *
- * Aqui ficam as ROTAS do app: a lista de telas e para onde cada uma leva.
- *
- * Usei o React Navigation com a "pilha" (stack), que funciona como uma
- * pilha de cartas:
- *   - navigate('Detalhes') coloca a tela Detalhes POR CIMA da Home
- *   - goBack() tira a tela de cima e a Home aparece de novo
- *
- *   Login -> Home -> Detalhes
- *                 -> Agendar
- *
- * Cada <Stack.Screen> recebe:
- *   name      -> o nome que uso para navegar (ex: navigation.navigate('Home'))
- *   component -> o componente da tela
- *
- * Toda tela registrada aqui ganha automaticamente a prop "navigation"
- * (e a prop "route", com os dados enviados por quem navegou até ela).
- *
- * (A navegação não foi vista em aula: foi feita com ajuda de IA,
- * como a atividade permite.)
- */
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from '../screens/Login';
@@ -33,14 +9,18 @@ import { theme } from '../theme';
 
 const Stack = createNativeStackNavigator();
 
+// rotas do app, login -> home -> detalhes/agendar
+// navigate('Detalhes') empilha por cima da home, goBack tira e volta
+// isso aqui nao foi visto em aula, usei IA de ajuda 
+
 export default function AppRoutes() {
   return (
     <Stack.Navigator
-      initialRouteName="Login" // a primeira tela que aparece
+      initialRouteName="Login"
       screenOptions={{
-        headerShown: false, // escondo o cabeçalho padrão: cada tela usa o nosso Header
-        contentStyle: { backgroundColor: theme.colors.background }, // evita "piscar" branco na troca
-        animation: 'slide_from_right', // a tela nova entra deslizando da direita
+        headerShown: false, // cada tela usa o header nosso
+        contentStyle: { backgroundColor: theme.colors.background }, // pra nao piscar branco trocando de tela
+        animation: 'slide_from_right',
       }}
     >
       <Stack.Screen name="Login" component={Login} />

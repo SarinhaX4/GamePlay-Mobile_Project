@@ -6,20 +6,32 @@
  *   [foto]  Olá, Sara
  *           Hoje é dia de vitória
  *
- * Ele não recebe props: pega os dados direto do user.js.
+ * A FOTO É TOCÁVEL: tocar nela chama onAvatarPress.
+ * A Home usa isso para perguntar se a pessoa quer sair (logout).
+ * (No app original do NLW, o logout também fica no toque do avatar.)
+ *
+ * @param {function} onAvatarPress - função disparada ao tocar na foto
  */
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Avatar from './Avatar';
 import { theme } from '../theme';
 import { user } from '../data/user';
 
-export default function Profile() {
+export default function Profile({ onAvatarPress }) {
   return (
     // flexDirection row: foto e textos lado a lado (slide 31)
     <View style={styles.container}>
-      <Avatar source={user.avatar} />
+      {/*
+        O Avatar não sabe tocar: ele só desenha a foto.
+        Então EMBRULHO ele num TouchableOpacity, que dá o toque e o
+        efeito de transparência. Assim o Avatar continua simples e
+        pode ser reutilizado nos Detalhes, onde a foto não é tocável.
+      */}
+      <TouchableOpacity onPress={onAvatarPress} activeOpacity={0.7}>
+        <Avatar source={user.avatar} />
+      </TouchableOpacity>
 
       <View>
         {/*

@@ -1,17 +1,28 @@
 # GamePlay
 
-Aplicativo mobile desenvolvido em React Native + Expo, recriando 4 telas do protótipo Figma **"GamePlay - NLW Together"** (um app para agendar partidas de jogos com amigos do Discord). Atividade acadêmica da disciplina de Mobile, do curso de Engenharia de Software(UCB).
+Aplicativo mobile desenvolvido em React Native + Expo, recriando 4 telas do protótipo Figma **"GamePlay - NLW Together"** (um app para agendar partidas de jogos com amigos do Discord). Atividade acadêmica da disciplina de Mobile, do curso de Engenharia de Software (UCB).
 
 **Autora:** Sara Cristina Barros de Oliveira
 
 ## Telas desenvolvidas
 
 - **Login** — tela inicial de entrada no app.
-- **Home** — lista as partidas agendadas; tocar em uma categoria filtra a lista de partidas.
-- **Detalhes do servidor** — mostra informações do servidor selecionado e permite compartilhar via API Share nativa.
-- **Agendar** — permite selecionar categoria e preencher data/hora da partida, com validação de campos.
+- **Home** — lista as partidas agendadas; tocar em uma categoria filtra a lista de partidas e atualiza o total. Tocar na foto de perfil permite sair do app (logout).
+- **Detalhes do servidor** — mostra as informações da partida selecionada na Home e a lista de jogadores, e permite compartilhar o convite via API Share nativa.
+- **Agendar** — permite selecionar a categoria e preencher data, hora e descrição da partida, com validação de campos e contador de caracteres.
 
-> 📸 *Prints das telas em breve.*
+
+
+## Fluxo de navegação
+
+```
+Login ──(Entrar com Discord)──> Home ──(toque em uma partida)──> Detalhes
+                                  │
+                                  └──(botão +)──> Agendar
+
+Detalhes / Agendar ──(seta de voltar)──> Home
+Home ──(toque na foto → Sair)──> Login
+```
 
 ## Tecnologias e pacotes utilizados
 
@@ -19,29 +30,47 @@ Aplicativo mobile desenvolvido em React Native + Expo, recriando 4 telas do prot
 - Expo SDK 57
 - React Native
 - StyleSheet
+- @react-navigation/native e @react-navigation/native-stack (navegação entre telas)
+- react-native-screens
+- react-native-safe-area-context
 - @expo-google-fonts/inter
 - @expo-google-fonts/rajdhani
 - expo-font
-- react-native-safe-area-context
 - @expo/vector-icons
+
+## Conceitos aplicados
+
+- **Componentes reutilizáveis com props:** o mesmo `Button` é usado em 3 telas (com ícone opcional e estado `disabled`), e `Avatar`, `ListHeader`, `CategorySelect` e `Header` aparecem em mais de uma tela.
+- **`children`:** o componente `Background` envolve o conteúdo de todas as telas.
+- **Estado com `useState` e elevação de estado:** a categoria selecionada fica na tela, e os cards apenas recebem `checked` por props.
+- **Estilo condicional e array de estilos:** opacidade das categorias, cores de "Anfitrião"/"Visitante" e status dos jogadores.
+- **Flexbox:** layout de todas as telas.
+- **Imagens locais e remotas:** `require` para as imagens do projeto e `{ uri }` para fotos da internet.
+- **`TextInput` controlado:** os campos do Agendar usam `value`, o que permite limpar o formulário após agendar.
+- **Formulário:** `KeyboardAvoidingView`, `ScrollView` e `Keyboard.dismiss`.
+- **`Alert` com botões:** confirmação de agendamento e de logout.
 
 ## Personalização
 
-O layout, as medidas e as fontes seguem o protótipo original do Figma. A paleta de cores foi personalizada para tons de roxo com destaque em rosa neon, centralizada em `src/theme.js`.
+O layout, as medidas e as fontes seguem o protótipo original do Figma. A paleta de cores foi personalizada para tons de roxo com destaque em rosa neon, centralizada em `src/theme.js`. Os dados do usuário (nome e foto) ficam em `src/data/user.js`.
 
 ## Estrutura de pastas (resumida)
+
+```
 gameplay/
-App.js
-assets/
-avatar.png
-banner.png
-illustration.png
-games/
-src/
-theme.js
-data/
-components/
-screens/
+├── App.js              # carrega as fontes e inicia a navegação
+├── assets/             # imagens locais
+│   ├── avatar.png
+│   ├── banner.png
+│   ├── illustration.png
+│   └── games/          # capas dos jogos
+└── src/
+    ├── theme.js        # cores e fontes do app
+    ├── data/           # dados fictícios (usuário, categorias, partidas, jogadores)
+    ├── components/     # componentes reutilizáveis
+    ├── screens/        # telas: Login, Home, Detalhes, Agendar
+    └── routes/         # rotas de navegação entre as telas
+```
 
 ## Como rodar o projeto
 
@@ -61,7 +90,7 @@ npx expo login
 npx expo start
 ```
 
-Depois de rodar `npx expo start`, escaneie o QR code exibido no terminal com a câmera do celular (ou pelo app Expo Go).
+Depois de rodar `npx expo start`, escaneie o QR code exibido no terminal com a câmera do celular (ou pelo app Expo Go). O app abre na tela de Login.
 
 > ⚠️ O celular e o computador precisam estar conectados na **mesma rede Wi-Fi**.
 >
@@ -69,26 +98,26 @@ Depois de rodar `npx expo start`, escaneie o QR code exibido no terminal com a c
 >
 > Se o app não atualizar corretamente ou algo parecer "preso" em cache, use: `npx expo start -c`
 
-## Observação
-
-No `App.js`, a tela exibida é trocada manualmente (por exemplo, `<Login />`, `<Home />`, `<Detalhes />` ou `<Agendar />`) enquanto a navegação entre telas não está pronta.
-
 ## Status do projeto
 
 - ✅ Parte 1 — Login
 - ✅ Parte 2 — Home
 - ✅ Parte 3 — Detalhes do servidor
 - ✅ Parte 4 — Agendar
-- 🔄 Parte 5 — Navegação entre as telas (em andamento)
+- ✅ Parte 5 — Navegação entre as telas
+- ✅ Extra — Logout ao tocar na foto de perfil
 
 ## Problemas comuns
 
 **"Unable to resolve module..."**
-Geralmente ocorre por nome de arquivo/pasta digitado errado, ou por falta de instalar algum pacote. Rode `npm install` novamente e confira o caminho do import.
+Geralmente ocorre por nome de arquivo/pasta digitado errado, por imagem faltando na pasta `assets/` ou por falta de instalar algum pacote. Rode `npm install` novamente e confira o caminho do import.
 
-**"You need to be signed in to view this page"**
+**"You need to be signed in to Expo Go and Expo CLI to open your project"**
 Rode `npx expo login` no terminal e faça login também no app Expo Go do celular com a mesma conta.
 
 **Windows Defender aponta falso positivo**
 O Windows Defender pode, ocasionalmente, sinalizar falsos positivos em arquivos `.js` do projeto (por causa de links de imagem no código). Se isso acontecer, adicione a pasta do projeto nas exclusões do Windows Defender.
 
+## Créditos
+
+Protótipo original: **GamePlay**, criado pela Rocketseat para o evento NLW Together.

@@ -1,16 +1,7 @@
-/**
- * TextArea.js
- *
- * O campo grande de várias linhas da descrição (tela Agendar).
- * Também é CONTROLADO: o texto mora no estado da tela.
- *
- * @param {string}   value        - texto atual
- * @param {function} onChangeText - função chamada a cada caractere
- * @param {number}   maxLength    - limite de caracteres
- */
-
 import { StyleSheet, TextInput } from 'react-native';
 import { theme } from '../theme';
+
+// campo grande da descricao, tela agendar, tambem controlado
 
 export default function TextArea({ value, onChangeText, maxLength = 100 }) {
   return (
@@ -18,10 +9,9 @@ export default function TextArea({ value, onChangeText, maxLength = 100 }) {
       style={styles.input}
       value={value}
       onChangeText={onChangeText}
-      multiline // permite várias linhas (slide 61)
+      multiline
       maxLength={maxLength}
-      // No Android, sem isso o texto começa no MEIO da caixa. Com 'top', começa em cima.
-      textAlignVertical="top"
+      textAlignVertical="top" // sem isso no android o texto comeca no meio
       selectionColor={theme.colors.primary}
     />
   );
@@ -30,7 +20,7 @@ export default function TextArea({ value, onChangeText, maxLength = 100 }) {
 const styles = StyleSheet.create({
   input: {
     width: '100%',
-    height: 95, // altura do Figma
+    height: 95, // altura do figma
     backgroundColor: theme.colors.shape,
     borderWidth: 1,
     borderColor: theme.colors.border,

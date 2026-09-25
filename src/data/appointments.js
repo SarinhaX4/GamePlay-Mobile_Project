@@ -1,20 +1,8 @@
-/**
- * appointments.js
- *
- * As partidas agendadas que aparecem na Home.
- * Os dados são FICTÍCIOS e fixos (o app não tem servidor/banco de dados).
- * Os valores foram copiados do Figma.
- *
- * Cada partida tem:
- *   id          -> identificador único (vira a key do .map)
- *   guildName   -> nome do servidor do Discord
- *   game        -> nome do jogo (usado na tela de Detalhes)
- *   image       -> capa do jogo (IMAGEM LOCAL, com require)
- *   category    -> id da categoria (liga com o categories.js)
- *   date        -> data e hora já no formato de exibição
- *   owner       -> true = eu sou o Anfitrião / false = sou Visitante
- *   description -> texto que aparece na tela de Detalhes
- */
+// partidas fixas que aparecem na home, dados fake pq nao tem back
+// copiei os valor do figma
+
+// category liga com o id la de categories.js
+// owner: true = sou anfitriao, false = visitante
 
 export const appointments = [
   {

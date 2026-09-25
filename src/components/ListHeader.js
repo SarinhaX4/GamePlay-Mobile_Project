@@ -1,18 +1,7 @@
-/**
- * ListHeader.js
- *
- * O título de uma lista com um contador à direita:
- *
- *   Partidas agendadas              Total 5
- *
- * Aparece na Home ("Partidas agendadas") e nos Detalhes ("Jogadores").
- *
- * @param {string} title    - texto da esquerda
- * @param {string} subtitle - texto da direita
- */
-
 import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '../theme';
+
+// titulo de lista com contador do lado, usa na home e nos detalhes
 
 export default function ListHeader({ title, subtitle }) {
   return (
@@ -26,7 +15,7 @@ export default function ListHeader({ title, subtitle }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between', // um em cada ponta (slide 32)
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 24,
   },

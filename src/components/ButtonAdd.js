@@ -1,19 +1,10 @@
-/**
- * ButtonAdd.js
- *
- * O botão quadrado com "+" no canto da Home, que leva para "Agendar".
- *
- * Por que não reaproveitei o Button?
- * O Button é largo, com texto e ícone opcional. Este é um quadrado de 48x48
- * só com ícone. Forçar os dois no mesmo componente encheria o Button
- * de condições. Componentes diferentes para coisas diferentes.
- *
- * @param {function} onPress - função disparada no toque
- */
-
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { theme } from '../theme';
+
+// botao quadrado com + da home, leva pro agendar
+// nao reaproveitei o Button pq ele é largo com texto, esse é só icone
+// ia encher o Button de condicao, mais facil separar
 
 export default function ButtonAdd({ onPress }) {
   return (
@@ -29,7 +20,7 @@ const styles = StyleSheet.create({
     height: 48,
     backgroundColor: theme.colors.primary,
     borderRadius: 8,
-    justifyContent: 'center', // centraliza o "+" na vertical
-    alignItems: 'center', // e na horizontal (slide 34)
+    justifyContent: 'center', // centraliza o +
+    alignItems: 'center',
   },
 });
